@@ -1,0 +1,17 @@
+import paramiko
+import time
+ip='10.129.254.4'
+username=''
+password=''
+ssh_client_conn = paramiko.SSHClient()
+ssh_client_conn.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+ssh_client_conn.connect(ip, username=username, password=password, look_for_keys=False, allow_agent=False)
+print ("SSH connection established to {}".format(ip))
+conn = ssh_client_conn.invoke_shell()
+conn.send("ter len 0 \n")
+conn.send("clear ip nat translation * \n")
+time.sleep(3)
+print("####...NAT Translations Cleared..#### \n\n\n")
+output = conn.recv(8000)
+ref_out=output.decode()
+print (ref_out)
